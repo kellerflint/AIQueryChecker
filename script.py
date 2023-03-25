@@ -29,17 +29,14 @@ def appendToFile(fileName, header, content):
 # Maybe a file to remove comments, but IDK I want to see thier comments. But we might want to strip them for the AI
 def getAIFeedback(inputText):
         openai.api_key = OPENAI_API_KEY
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt= AI_PROMPT + inputText,
-            temperature=0.5,
-            max_tokens=1000,
-            n=1,
-            stop=None,
-            timeout=5
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": AI_PROMPT + inputText}
+            ]
         )
         if response.choices:
-            return response.choices[0].text.strip()
+            return response.choices[0].message.content.strip()
         else:
             return None
 
